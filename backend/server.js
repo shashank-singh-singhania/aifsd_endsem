@@ -24,7 +24,10 @@ app.use(cors({
 		// Allow requests with no origin (like mobile apps, curl, or server-to-server)
 		if (!origin) return callback(null, true);
 		if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) return callback(null, true);
-		return callback(new Error(`CORS policy: origin ${origin} is not allowed`));
+		// Do not throw an error here; return false so the CORS middleware
+		// simply doesn't set CORS headers for disallowed origins.
+		console.warn(`CORS: rejected origin=${origin} allowed=${allowedOrigins.join(',')}`);
+		return callback(null, false);
 	},
 	credentials: true
 }));
