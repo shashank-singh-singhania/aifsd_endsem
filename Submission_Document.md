@@ -1,8 +1,9 @@
 # Project Report: AI-Based Employee Performance Analytics & Recommendation System
 
 ## Student Details
-**Name:** 
-**Roll Number:** 
+**Name: Shashank Singh** 
+**Roll Number: 202401100300227** 
+**Branch & Section: CSE-AI/D** 
 **Subject:** AI Driven Full Stack Development (AI308B)
 
 ---
