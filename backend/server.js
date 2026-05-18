@@ -12,7 +12,22 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+// Configure CORS to support one or more allowed client URLs provided
+// via the CLIENT_URL env var (comma-separated). If CLIENT_URL is "*"
+// the server will allow any origin. When credentials are enabled,
+// you must return a specific origin value instead of '*'.
+const rawClientUrl = process.env.CLIENT_URL || '';
+const allowedOrigins = rawClientUrl === '*' ? ['*'] : rawClientUrl.split(',').map(s => s.trim()).filter(Boolean);
+
+app.use(cors({
+	origin: (origin, callback) => {
+		// Allow requests with no origin (like mobile apps, curl, or server-to-server)
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) return callback(null, true);
+		return callback(new Error(`CORS policy: origin ${origin} is not allowed`));
+	},
+	credentials: true
+}));
 app.use(express.json());
 app.use(morgan('dev'));
 
